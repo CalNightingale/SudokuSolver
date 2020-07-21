@@ -4,10 +4,10 @@ import './index.css';
 
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
-    </button>
+    <input className="square" type="text" value={0} />
   );
+
+
 }
 
 class Board extends React.Component {
@@ -15,7 +15,7 @@ class Board extends React.Component {
     return (
       <Square
         value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
+        onChange={() => this.props.handleChange}
       />
     );
   }
@@ -154,6 +154,10 @@ class Game extends React.Component {
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });
+  }
+
+  handleChange() {
+
   }
 
   jumpTo(step) {
