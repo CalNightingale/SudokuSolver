@@ -5,12 +5,11 @@ import './index.css';
 class Square extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.props.setVal(event.target.value, this.props.sqNum);
   }
 
   render() {
@@ -18,7 +17,7 @@ class Square extends React.Component {
       <input
         className="square"
         type="text"
-        value={this.state.value}
+        value={this.props.squares[this.props.sqNum]}
         onChange={this.handleChange}
       />
     );
@@ -29,8 +28,9 @@ class Board extends React.Component {
   renderSquare(i) {
     return (
       <Square
-        value={this.props.squares[i]}
-        onChange={() => this.props.handleChange}
+        squares={this.props.squares}
+        sqNum={i}
+        setVal={this.props.setVal}
       />
     );
   }
@@ -150,26 +150,23 @@ class Game extends React.Component {
     };
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
-    console.log('handleChange called');
-    alert('A number was changed: ' + this.state.value);
+  setVal(value, i){
+    this.state.squares[i] = value;
   }
 
-  jumpTo(step) {
-    this.setState({
-      stepNumber: step,
-      xIsNext: (step % 2) === 0,
-    });
-  }
+  //setRandValue() {
+  //  var i = Math.floor(Math.random() * 81); // pick random index to change
+  //  this.state.squares[i] = Math.floor(Math.random() * 10);
+  //}
 
   render() {
+    //this.setRandValue();
     return (
       <div className="game">
         <div className="game-board">
           <Board
             squares={this.state.squares}
-            onChange={(event) => this.handleChange(event)}
+            setVal={() => this.setVal}
           />
         </div>
       </div>
@@ -183,23 +180,3 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
-
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
