@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { genPuzzle } from './puzzleGen.js'
 
 class Square extends React.Component {
   constructor(props) {
@@ -96,7 +97,7 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares: Array(81).fill(null)
+      squares: genPuzzle()
     };
   }
 
