@@ -20,6 +20,35 @@ export function genPuzzle(){
   for(i = 0; i < 9; i++) {
     squares[i] = shuffledNums[i];
   }
+  // determine options for top row
+  while(topOptions.length > 6) {
+    var x = topOptions.shift();
+    if(squares[0] != x && squares[1] != x && squares[2] != x) {
+      topOptions.push(x); // put element back if it isn't in the row
+    }
+  }
+  // determine options for middle row
+  while(midOptions.length > 6) {
+    var x = midOptions.shift();
+    if(squares[3] != x && squares[4] != x && squares[5] != x) {
+      midOptions.push(x); // put element back if it isn't in the row
+    }
+  }
+  // determine options for bottom row
+  while(botOptions.length > 6) {
+    var x = botOptions.shift();
+    if(squares[6] != x && squares[7] != x && squares[8] != x) {
+      botOptions.push(x); // put element back if it isn't in the row
+    }
+  }
+  // fill in top row middle box
+  shuffleArray(topOptions);
+  for(i = 9; i < 12; i++) {
+    squares[i] = topOptions.pop();
+  }
+  console.log(topOptions);
+  console.log(midOptions);
+  console.log(botOptions);
 
   return squares;
 }
