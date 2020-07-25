@@ -57,6 +57,7 @@ export function genPuzzle(){
   }
   console.log('top row finished: ' + tMBTop);
   // fill in middle row
+  shuffleArray(midOptions);
   var tMBMid = [];
   console.log('handling mandatory mid numbers...')
   for(i = 0; i < midOptions.length; i++){
@@ -81,6 +82,7 @@ export function genPuzzle(){
     squares[i] = tMBMid[i - 12];
   }
   // fill in bottom row
+  shuffleArray(botOptions);
   var tMBBot = [];
   while(botOptions.length > 3) {
     var x = botOptions.shift();
@@ -95,18 +97,13 @@ export function genPuzzle(){
   }
   console.log('middle row finished: ' + tMBMid);
   console.log('options for bottom row: ' + botOptions);
-  // fill in bottom row
-  /*
-  var tMBBot = [];
-  while(botOptions.length > 3) {
-    var x = botOptions.shift();
-    if(tMBTop.includes(x) || tMBMid.includes(x) || tLBBot.includes(x)) {
-      botOptions.push(x);
-    } else {
-      tMBBot.push(x);
-    }
+
+  // fill in right box
+  for(i = 18; i < 27; i++) {
+    if(i < 21) squares[i] = topOptions.pop();
+    else if(i < 24) squares[i] = midOptions.pop();
+    else squares[i] = botOptions.pop();
   }
-  */
   return squares;
 }
 
