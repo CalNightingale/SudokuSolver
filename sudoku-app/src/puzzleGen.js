@@ -55,12 +55,23 @@ export function genPuzzle(){
     tMBTop.push(topOptions.pop());
     squares[i] = tMBTop[i - 9];
   }
+  console.log('top row finished: ' + tMBTop);
   // fill in middle row
   var tMBMid = [];
+  console.log('handling mandatory mid numbers...')
+  for(i = 0; i < midOptions.length; i++){
+    var x = midOptions[i];
+    if(!tMBTop.includes(x) && tLBBot.includes(x)) {
+      // add numbers needed to complete the box that cannot go in the bottom row
+      tMBMid.push(x);
+      midOptions.splice(i, 1); // remove pushed number from options list
+      i--;
+    }
+  }
+  console.log('found ' + tMBMid.length + ' mandatory numbers. Remaining options: ' + midOptions.length);
   while(midOptions.length > 3) {
     var x = midOptions.shift();
     if(tMBTop.includes(x) || tLBMid.includes(x)) {
-      // anything in this row cannot be in the area above it or the row on the left
       midOptions.push(x);
     } else {
       tMBMid.push(x);
@@ -69,6 +80,33 @@ export function genPuzzle(){
   for(i = 12; i < 15; i++) {
     squares[i] = tMBMid[i - 12];
   }
+  // fill in bottom row
+  var tMBBot = [];
+  while(botOptions.length > 3) {
+    var x = botOptions.shift();
+    if(tMBTop.includes(x) || tMBMid.includes(x) || tLBBot.includes(x)) {
+      botOptions.push(x);
+    } else {
+      tMBBot.push(x);
+    }
+  }
+  for(i = 15; i < 18; i++) {
+    squares[i] = tMBBot[i - 15];
+  }
+  console.log('middle row finished: ' + tMBMid);
+  console.log('options for bottom row: ' + botOptions);
+  // fill in bottom row
+  /*
+  var tMBBot = [];
+  while(botOptions.length > 3) {
+    var x = botOptions.shift();
+    if(tMBTop.includes(x) || tMBMid.includes(x) || tLBBot.includes(x)) {
+      botOptions.push(x);
+    } else {
+      tMBBot.push(x);
+    }
+  }
+  */
   return squares;
 }
 
